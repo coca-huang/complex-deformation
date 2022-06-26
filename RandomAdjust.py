@@ -39,6 +39,10 @@ class RandomAdjust(nn.Module):
             x = self.re(x)
             noise = self.re._params['noise'].to(self.device)  # [b, h, w, 2]
             disp_e = self.get_elastic_disp(noise)  # [b, h, w, 2]
+            # rebase
+            # disp_e = disp_e.permute(0, 3, 1, 2)  # [b, 2, h, w]
+            # disp_e = self.re.apply_transform(disp_e, self.re._params)
+            # disp_e = disp_e.permute(0, 2, 3, 1)  # [b, h, w, 2]
             params |= {'de': disp_e}
 
         # perspective
@@ -46,8 +50,6 @@ class RandomAdjust(nn.Module):
             # generate params
             self.rp(x)
             # fix end_points
-            # corner = torch.tensor([(0, 0), (W, 0), (W, H), (0, H)]).repeat(B, 1, 1).to(x)
-            # self.rp._params['end_points'] = corner
             corner = self.rp._params['start_points']
             self.rp._params['start_points'] = self.rp._params['end_points']
             self.rp._params['end_points'] = corner

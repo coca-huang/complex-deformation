@@ -8,3 +8,5 @@ Run our sample file `test.py` to learn how to use this extension.
 
 Just like the sample (left: after transform | right: after reverse):
 ![sample](assets/sample.png)
+
+**Note: There are some theoretical deviations in the reduction of Elastic.**
